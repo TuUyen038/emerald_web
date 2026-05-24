@@ -1,6 +1,7 @@
 import axios from "axios";
 import { clearTokens, getAccessToken, setTokens } from "@/lib/auth-storage";
 import { refreshToken } from "@/services/auth.service";
+import { toast } from "sonner";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api",
@@ -53,6 +54,10 @@ axiosInstance.interceptors.response.use(
         window.location.href = "/login";
         return Promise.reject(err);
       }
+    }
+
+    if (error.response?.status === 403) {
+      toast.error(error.response.data?.message || "Bạn không có quyền thực hiện hành động này!");
     }
 
     return Promise.reject(error);

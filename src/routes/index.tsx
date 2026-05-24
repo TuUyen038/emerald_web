@@ -31,6 +31,7 @@ import DetailAccountPage from "@/pages/Accounts/detail-account";
 import AuditLogsPage from "@/pages/admin/audit-logs";
 import MetricsDashboard from "@/pages/admin/metrics";
 import HealthDashboard from "@/pages/admin/health";
+import PermissionsPage from "@/pages/Permissions";
 
 const Assets = lazy(() => import("@/pages/Assets/view-assets"));
 const Notifications = lazy(() => import("@/pages/Notifications/view-notifications"));
@@ -45,7 +46,6 @@ const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 const VotingsPage = lazy(() => import("@/pages/Votings/view-votings"));
 const ProfilePage = lazy(() => import("@/pages/Profile"));
 const UnauthorizedPage = lazy(() => import("@/pages/Unauthorized"));
-
 export const routes = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/forgot-password", element: <ForgotPassword /> },
@@ -62,11 +62,11 @@ export const routes = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/blocks" replace /> },
 
-      // Assets - ADMIN only
+      // Assets
       {
         path: "assets",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="assets">
             <Assets />
           </RoleBasedRoute>
         ),
@@ -74,17 +74,17 @@ export const routes = createBrowserRouter([
       {
         path: "assets/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="assets">
             <DetailAssetPage />
           </RoleBasedRoute>
         ),
       },
 
-      // Notifications - ADMIN & TECHNICIAN
+      // Notifications
       {
         path: "notifications",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="notifications">
             <Notifications />
           </RoleBasedRoute>
         ),
@@ -92,27 +92,27 @@ export const routes = createBrowserRouter([
       {
         path: "notifications/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="notifications">
             <DetailNotificationPage />
           </RoleBasedRoute>
         ),
       },
 
-      // System Notifications - ADMIN & TECHNICIAN
+      // System Notifications
       {
         path: "system-notifications",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="notifications">
             <SystemNotifications />
           </RoleBasedRoute>
         ),
       },
 
-      // Residents - ADMIN only
+      // Residents
       {
         path: "residents",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="residents">
             <ResidentsPage />
           </RoleBasedRoute>
         ),
@@ -120,17 +120,17 @@ export const routes = createBrowserRouter([
       {
         path: "residents/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="residents">
             <DetailResidentPage />
           </RoleBasedRoute>
         ),
       },
 
-      // Services - ADMIN only
+      // Services
       {
         path: "services",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="services">
             <Services />
           </RoleBasedRoute>
         ),
@@ -138,27 +138,27 @@ export const routes = createBrowserRouter([
       {
         path: "services/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="services">
             <DetailServicePage />
           </RoleBasedRoute>
         ),
       },
 
-      // Reports - ADMIN only
+      // Reports
       {
         path: "reports",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="reports">
             <Report />
           </RoleBasedRoute>
         ),
       },
 
-      // Blocks - ADMIN only
+      // Blocks
       {
         path: "blocks",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="blocks">
             <BlocksPage />
           </RoleBasedRoute>
         ),
@@ -166,7 +166,7 @@ export const routes = createBrowserRouter([
       {
         path: "blocks/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="blocks">
             <DetailBlockPage />
           </RoleBasedRoute>
         ),
@@ -174,7 +174,7 @@ export const routes = createBrowserRouter([
       {
         path: "blocks/create",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="blocks">
             <CreateBlockPage />
           </RoleBasedRoute>
         ),
@@ -182,17 +182,17 @@ export const routes = createBrowserRouter([
       {
         path: "blocks/update/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="blocks">
             <UpdateBlockPage />
           </RoleBasedRoute>
         ),
       },
 
-      // Apartments - ADMIN only
+      // Apartments
       {
         path: "apartments",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="apartments">
             <ApartmentsPage />
           </RoleBasedRoute>
         ),
@@ -200,17 +200,17 @@ export const routes = createBrowserRouter([
       {
         path: "apartments/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="apartments">
             <DetailApartmentPage />
           </RoleBasedRoute>
         ),
       },
 
-      // Votings - ADMIN only
+      // Votings
       {
         path: "votings",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="votings">
             <VotingsPage />
           </RoleBasedRoute>
         ),
@@ -218,7 +218,7 @@ export const routes = createBrowserRouter([
       {
         path: "votings/create",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="votings">
             <CreateVotingPage />
           </RoleBasedRoute>
         ),
@@ -226,7 +226,7 @@ export const routes = createBrowserRouter([
       {
         path: "votings/update/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="votings">
             <UpdateVotingPage />
           </RoleBasedRoute>
         ),
@@ -234,17 +234,17 @@ export const routes = createBrowserRouter([
       {
         path: "votings/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="votings">
             <DetailVotingPage />
           </RoleBasedRoute>
         ),
       },
 
-      // Invoices - ADMIN only
+      // Invoices
       {
         path: "invoices",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="invoices">
             <InvoicesPage />
           </RoleBasedRoute>
         ),
@@ -252,17 +252,17 @@ export const routes = createBrowserRouter([
       {
         path: "invoices/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="invoices">
             <DetailInvoicePage />
           </RoleBasedRoute>
         ),
       },
 
-      // Fees - ADMIN only
+      // Fees
       {
         path: "fees",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="fees">
             <FeesPage />
           </RoleBasedRoute>
         ),
@@ -270,17 +270,17 @@ export const routes = createBrowserRouter([
       {
         path: "fees/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="fees">
             <DetailFeePage />
           </RoleBasedRoute>
         ),
       },
 
-      // Technicians - ADMIN only
+      // Technicians
       {
         path: "technicians",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="technicians">
             <TechniciansPage />
           </RoleBasedRoute>
         ),
@@ -288,17 +288,17 @@ export const routes = createBrowserRouter([
       {
         path: "technicians/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="technicians">
             <DetailTechnicianPage />
           </RoleBasedRoute>
         ),
       },
 
-      // Issues/Requests - ADMIN & TECHNICIAN
+      // Issues/Requests
       {
         path: "issues",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="issues">
             <IssuesPage />
           </RoleBasedRoute>
         ),
@@ -306,17 +306,17 @@ export const routes = createBrowserRouter([
       {
         path: "issues/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="issues">
             <DetailIssuePage />
           </RoleBasedRoute>
         ),
       },
 
-      // Maintenances - ADMIN & TECHNICIAN
+      // Maintenances
       {
         path: "maintenances",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="maintenances">
             <MaintenancesPage />
           </RoleBasedRoute>
         ),
@@ -324,20 +324,27 @@ export const routes = createBrowserRouter([
       {
         path: "maintenances/:id",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN", "TECHNICIAN"]}>
+          <RoleBasedRoute requiredModule="maintenances">
             <DetailMaintenancePage />
           </RoleBasedRoute>
         ),
       },
 
-      // Profile - all authenticated users
-      { path: "profile", element: <ProfilePage /> },
+      // Profile - Dành cho tất cả user đã login (MODULE_MAPPING trả về null nên luôn được thông qua)
+      {
+        path: "profile",
+        element: (
+          <RoleBasedRoute requiredModule="profile">
+            <ProfilePage />
+          </RoleBasedRoute>
+        ),
+      },
 
-      // Accounts - ADMIN only
+      // Accounts
       {
         path: "accounts",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="accounts">
             <AccountsPage />
           </RoleBasedRoute>
         ),
@@ -345,36 +352,46 @@ export const routes = createBrowserRouter([
       {
         path: "accounts/:accountId",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="accounts">
             <DetailAccountPage />
           </RoleBasedRoute>
         ),
       },
-      // UC33 - Audit Log
+      
+      // Permissions Management
+      {
+        path: "matrix",
+        element: (
+          <RoleBasedRoute requiredModule="matrix">
+            <PermissionsPage />
+          </RoleBasedRoute>
+        ),
+      },
+      // Audit Log
       {
         path: "audit-logs",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="audit-logs">
             <AuditLogsPage />
           </RoleBasedRoute>
         ),
       },
 
-      // UC34 - System Metrics
+      // System Metrics
       {
         path: "metrics",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="metrics">
             <MetricsDashboard />
           </RoleBasedRoute>
         ),
       },
 
-      // UC35 - System Health
+      // System Health
       {
         path: "health",
         element: (
-          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+          <RoleBasedRoute requiredModule="health">
             <HealthDashboard />
           </RoleBasedRoute>
         ),

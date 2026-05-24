@@ -1,6 +1,14 @@
 import axiosInstance, { refreshAxios } from "@/lib/axios";
 import type { AuthResponse, AuthUser, ChangePasswordPayload } from "@/types/auth";
 
+export const getPermissionsMatrix = async () => {
+  // Sử dụng axiosInstance để tự động đính kèm Access Token vào Header Bearer
+  const response = await axiosInstance.get("/permissions/matrix");
+  
+  // Trả về trực tiếp cục data ma trận (BE của bạn bọc qua format chung nên lấy response.data.data)
+  return response.data.data; 
+};
+
 export const login = async ({ email, password }: { email: string; password: string }) => {
   const response = await refreshAxios.post("/auth/login", { email, password });
   return response.data.data as AuthResponse;

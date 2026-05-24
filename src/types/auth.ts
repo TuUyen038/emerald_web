@@ -1,4 +1,4 @@
-export type UserRole = "ADMIN" | "RESIDENT" | "TECHNICIAN";
+export type UserRole = "ADMIN" | "RESIDENT" | "OPERATIONS" | "MANAGEMENT_BOARD";
 
 export type ChangePasswordPayload = {
   oldPassword: string;
