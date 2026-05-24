@@ -19,11 +19,26 @@ import {
 } from "lucide-react";
 import Logo from "@assets/logo.svg";
 import { usePermission } from "@/hooks/usePermission";
+import { type PermissionModule } from "@/constants/permissions";
+import { useAuth } from "@/contexts/AuthContext";
+
+interface MenuItem {
+  id: PermissionModule; // Định danh bắt buộc phải thuộc danh sách Module của hệ thống
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  label: string;
+  path: string; // Thêm path tường minh để tránh lỗi điều hướng tự động sai tên folder
+}
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { canView } = usePermission();
+
+  const { user, permissions } = useAuth();
+
+console.log("=== CHECK AUTH CONTEXT VALUE ===");
+console.log("User hiện tại:", user);
+console.log("Ma trận quyền từ BE:", permissions);
 
   const allMenuItems = [
     { id: "blocks", icon: Building2, label: "Quản lý tòa nhà" },
@@ -31,7 +46,7 @@ const Sidebar: React.FC = () => {
     { id: "invoices", icon: CircleDollarSign, label: "Công nợ" },
     { id: "fees", icon: Receipt, label: "Phí dịch vụ" },
     { id: "residents", icon: Users, label: "Cư dân" },
-    { id: "technicians", icon: UtilityPole, label: "Kỹ thuật viên" },
+    // { id: "technicians", icon: UtilityPole, label: "Kỹ thuật viên" },
     { id: "assets", icon: Armchair, label: "Tài sản, thiết bị" },
     { id: "services", icon: Store, label: "Dịch vụ" },
     { id: "issues", icon: AlertCircle, label: "Phản ánh, yêu cầu" },
@@ -41,13 +56,14 @@ const Sidebar: React.FC = () => {
     { id: "reports", icon: TrendingUp, label: "Báo cáo thống kê" },
     { id: "accounts", icon: UserCog, label: "Tài khoản" },
     { id: "profile", icon: User2, label: "Trang cá nhân" },
+    { id: "matrix", icon: UserCog, label: "Quản lý quyền" },
     { id: "audit-logs", icon: AlertCircle, label: "Audit Log" },
     { id: "metrics", icon: TrendingUp, label: "System Metrics" },
     { id: "health", icon: UtilityPole, label: "System Health" },
   ] as const;
 
   // Lọc menu items dựa trên quyền của user
-  const visibleMenuItems = allMenuItems.filter((item) => canView(item.id as any));
+  const visibleMenuItems = allMenuItems.filter((item) => canView(item.id));
 
   const handleNavigate = (path: string) => {
     navigate(path);
