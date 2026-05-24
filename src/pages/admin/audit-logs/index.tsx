@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Download, RefreshCw } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 import { SearchBar } from "@/components/common/SearchBar";
@@ -9,34 +9,39 @@ import AuditLogDetail from "./AuditLogDetail";
 import { Button } from "@/components/ui/button";
 
 const AuditLogsPage = () => {
-  const [filters, setFilters] = useState({
-    page: 1,
-    limit: 20,
-    search: "",
-  });
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const { data, isLoading, refetch } = useAuditLogs({
-    ...filters,
-    path: filters.search || undefined,
+    limit: 500,
+    page: 1,
+    path: searchTerm || undefined,
   });
 
   const exportMutation = useExportAuditCsv();
 
   const handleExport = () => {
-    exportMutation.mutate(filters, {
-      onSuccess: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `audit-log-${new Date().toISOString().split("T")[0]}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+    exportMutation.mutate(
+      { path: searchTerm || undefined },
+      {
+        onSuccess: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `audit-log-${new Date().toISOString().split("T")[0]}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        },
       },
-    });
+    );
+  };
+
+  const logs = data?.data || [];
+
+  const handleRowClick = (row: any) => {
+    setExpandedId(expandedId === row.id ? null : row.id);
   };
 
   return (
@@ -59,27 +64,27 @@ const AuditLogsPage = () => {
       />
 
       <div className="bg-white p-4 rounded border border-gray-200">
-        <SearchBar
-          placeholder="Tìm theo email, path, IP..."
-          onSearch={(term) => setFilters((prev) => ({ ...prev, search: term, page: 1 }))}
-        />
+        <SearchBar placeholder="Tìm theo email, path, IP..." onSearch={setSearchTerm} />
       </div>
 
-      <CustomTable
-        data={data?.data || []}
-        columns={auditLogColumns}
-        defaultPageSize={20}
-        // onRowClick={(row: any) =>
-        //   setExpandedId(expandedId === row.id ? null : row.id)
-        // }
-        // expandedRow không có sẵn trong CustomTable hiện tại → dùng render tùy chỉnh hoặc mở rộng sau
-      />
+      {isLoading ? (
+        <div className="bg-white p-12 text-center text-gray-500 border rounded shadow-sm min-h-[400px]">
+          Đang tải dữ liệu audit log...
+        </div>
+      ) : (
+        <CustomTable
+          data={logs}
+          columns={auditLogColumns}
+          defaultPageSize={100}
+          showCheckbox={false}
+          onRowClick={handleRowClick} // ← Đã thêm
+        />
+      )}
 
-      {/* Fallback detail khi click row */}
       {expandedId && (
-        <div className="mt-4">
-          {data?.data?.find((log: any) => log.id === expandedId) && (
-            <AuditLogDetail log={data.data.find((log: any) => log.id === expandedId)!} />
+        <div className="mt-4 px-1">
+          {logs.find((log: any) => log.id === expandedId) && (
+            <AuditLogDetail log={logs.find((log: any) => log.id === expandedId)!} />
           )}
         </div>
       )}

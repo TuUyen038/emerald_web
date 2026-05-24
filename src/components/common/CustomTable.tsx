@@ -46,6 +46,7 @@ interface CustomTableProps<T> {
   defaultPageSize?: number;
   paginationAlign?: "start" | "center" | "end";
   showCheckbox?: boolean;
+  onRowClick?: (item: T) => void;
 }
 
 function CustomTable<T extends { id: string | number }>({
@@ -60,6 +61,7 @@ function CustomTable<T extends { id: string | number }>({
   defaultPageSize = 10,
   paginationAlign = "center",
   showCheckbox = true,
+  onRowClick,
 }: CustomTableProps<T>) {
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -258,7 +260,8 @@ function CustomTable<T extends { id: string | number }>({
               currentData.map((row, index) => (
                 <TableRow
                   key={row.id}
-                  className="hover:bg-gray-50 border-b border-gray-300/50 last:border-0"
+                  className="hover:bg-gray-50 border-b border-gray-300/50 last:border-0 cursor-pointer"
+                  onClick={() => onRowClick?.(row)}
                 >
                   {showCheckbox && (
                     <TableCell className="border-r border-gray-300/50 p-0 text-center align-middle w-12 min-w-12">
