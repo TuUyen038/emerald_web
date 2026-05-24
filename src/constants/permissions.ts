@@ -17,7 +17,10 @@ export type PermissionModule =
   | "notifications"
   | "reports"
   | "accounts"
-  | "profile";
+  | "profile"
+  | "audit-logs"
+  | "metrics"
+  | "health";
 
 export type RolePermissions = Record<PermissionModule, PermissionAction[]>;
 
@@ -39,6 +42,9 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     reports: ["view"],
     accounts: ["view", "create", "update", "delete", "manage"],
     profile: ["view", "update"],
+    "audit-logs": ["view"],
+    metrics: ["view"],
+    health: ["view"],
   },
   TECHNICIAN: {
     blocks: [],
@@ -56,6 +62,9 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     reports: [],
     accounts: [],
     profile: ["view", "update"],
+    "audit-logs": [],
+    metrics: [],
+    health: [],
   },
   RESIDENT: {
     blocks: [],
@@ -73,6 +82,9 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     reports: [],
     accounts: [],
     profile: [],
+    "audit-logs": [],
+    metrics: [],
+    health: [],
   },
 };
 
@@ -93,4 +105,7 @@ export const MENU_ITEMS = [
   { id: "reports", label: "Báo cáo thống kê" },
   { id: "accounts", label: "Tài khoản" },
   { id: "profile", label: "Tài khoản" },
+  { id: "audit-logs", label: "Audit Log" },
+  { id: "metrics", label: "System Metrics" },
+  { id: "health", label: "System Health" },
 ] as const;

@@ -28,6 +28,9 @@ import FeesPage from "@/pages/Fees/view-fees";
 import DetailFeePage from "@/pages/Fees/detail-fee";
 import AccountsPage from "@/pages/Accounts/view-accounts";
 import DetailAccountPage from "@/pages/Accounts/detail-account";
+import AuditLogsPage from "@/pages/admin/audit-logs";
+import MetricsDashboard from "@/pages/admin/metrics";
+import HealthDashboard from "@/pages/admin/health";
 
 const Assets = lazy(() => import("@/pages/Assets/view-assets"));
 const Notifications = lazy(() => import("@/pages/Notifications/view-notifications"));
@@ -344,6 +347,35 @@ export const routes = createBrowserRouter([
         element: (
           <RoleBasedRoute allowedRoles={["ADMIN"]}>
             <DetailAccountPage />
+          </RoleBasedRoute>
+        ),
+      },
+      // UC33 - Audit Log
+      {
+        path: "audit-logs",
+        element: (
+          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+            <AuditLogsPage />
+          </RoleBasedRoute>
+        ),
+      },
+
+      // UC34 - System Metrics
+      {
+        path: "metrics",
+        element: (
+          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+            <MetricsDashboard />
+          </RoleBasedRoute>
+        ),
+      },
+
+      // UC35 - System Health
+      {
+        path: "health",
+        element: (
+          <RoleBasedRoute allowedRoles={["ADMIN"]}>
+            <HealthDashboard />
           </RoleBasedRoute>
         ),
       },
