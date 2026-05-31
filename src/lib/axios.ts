@@ -1,5 +1,5 @@
 import axios from "axios";
-import { clearTokens, getAccessToken, setTokens } from "@/lib/auth-storage";
+import { clearAuthStorage, getAccessToken, setTokens } from "@/lib/auth-storage";
 import { refreshToken } from "@/services/auth.service";
 import { toast } from "sonner";
 
@@ -50,7 +50,7 @@ axiosInstance.interceptors.response.use(
         // gọi lại request ban đầu
         return axiosInstance(originalRequest);
       } catch (err) {
-        clearTokens();
+        clearAuthStorage();
         window.location.href = "/login";
         return Promise.reject(err);
       }
