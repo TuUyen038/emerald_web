@@ -21,8 +21,8 @@ const ACTIONS = [
   { key: "canView", label: "Xem" },
   { key: "canCreate", label: "Tạo" },
   { key: "canEdit", label: "Sửa" },
-  { key: "canApprove", label: "Duyệt" },
-  { key: "canExport", label: "Export" },
+  // { key: "canApprove", label: "Duyệt" },
+  // { key: "canExport", label: "Export" },
   { key: "canDelete", label: "Xóa" },
 ];
 
