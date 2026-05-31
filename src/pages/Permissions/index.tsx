@@ -36,7 +36,7 @@ const ROLE_LABEL: Record<string, string> = {
 const MODULE_LABEL: Record<string, string> = {
   RESIDENT_APARTMENT: "Toà nhà - Căn hộ - Cư dân",
   INVOICE_DEBT: "Hóa đơn - Chi phí - Thanh toán",
-  AMENITY_BOOKING: "Tiện ích và Đặt chỗ",
+  AMENITY_BOOKING: "Dịch vụ",
   REPORTING: "Báo cáo thống kê",
   MAINTENANCE: "Phiếu bảo trì",
   FEEDBACK: "Ý kiến &Phản hồi",
